@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WorkerScript : UnitScript {
+public class WorkerScript : UnitScript
+{
 
 	// Use this for initialization
 	public override void Start()

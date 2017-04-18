@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class GameControllerScript : MonoBehaviour
 {
@@ -31,7 +32,10 @@ public class GameControllerScript : MonoBehaviour
 				m_geneticAI.GetComponent<GeneticAIScript>().m_won = true;
             }
 
+
+			EditorUtility.SetDirty(m_map);
 			Destroy(m_map);
+			m_map = null;
 			//record enemy health
 			m_geneticAI.GetComponent<GeneticAIScript>().m_opponentHealth = m_ruleAI.GetComponent<PlayerScript>().m_hq.GetComponent<HQScript>().m_health;
         }
@@ -49,6 +53,7 @@ public class GameControllerScript : MonoBehaviour
 		{
 			if (unit.m_deleteFlag)
 			{
+				EditorUtility.SetDirty(unit.gameObject);
 				Destroy(unit.gameObject);
 			}
 		}
@@ -58,6 +63,7 @@ public class GameControllerScript : MonoBehaviour
 		{
 			if (unit.m_deleteFlag)
 			{
+				EditorUtility.SetDirty(unit.gameObject);
 				Destroy(unit.gameObject);
 			}
 		}

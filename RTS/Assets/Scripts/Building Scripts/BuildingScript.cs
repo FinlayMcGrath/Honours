@@ -41,6 +41,10 @@ public class BuildingScript : MonoBehaviour
 					unit.transform.position = m_unitSpawner.transform.position;
 					unit.layer = gameObject.layer;
 					unit.GetComponent<UnitScript>().m_targetPosition = m_initialTarget;
+                    if (tag == "Rule AI")
+					{
+						transform.parent.GetComponent<PlayerScript>().SwapDirection();
+					}
 				}
 			}
 		}

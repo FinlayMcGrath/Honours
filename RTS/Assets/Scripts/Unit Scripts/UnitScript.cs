@@ -73,7 +73,7 @@ public class UnitScript : MonoBehaviour
             {
 				m_nearbyEnemyBuildings.Add(col.transform.GetComponent<BuildingScript>());
 			}
-		}		
+		}
 	}
 
 	void OnTriggerExit2D(Collider2D col)

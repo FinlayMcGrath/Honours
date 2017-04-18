@@ -20,7 +20,7 @@ public class PlayerScript : MonoBehaviour
 	protected float m_money = 0, m_techCost;
     protected HQScript m_hqScript;
 	protected int m_numWarriors = 0, m_workersPerResourcePoint;
-	protected GameObject m_initialWaypoint;
+	public GameObject m_initialWaypoint;
 	protected List<WaypointScript> m_waypoints;
 	protected bool m_hasBarracks, m_hasArcheryRange, m_hasStables, m_freeBarracks, m_freeArcheryRange, m_freeStables;
 
@@ -57,23 +57,29 @@ public class PlayerScript : MonoBehaviour
 	{
 		//initialise some variables
 		m_numChoices = 23;
+
+		//buildings
 		m_hasArcheryRange = false;
 		m_hasBarracks = false;
 		m_hasStables = false;
 		m_freeBarracks = false;
 		m_freeArcheryRange = false;
 		m_freeStables = false;
+
+		//tech
 		m_tech = false;
 		m_knightTech = false;
 		m_crossbowTech = false;
 		m_spearTech = false;
 		m_swordTech = false;
 		m_catapultTech = false;
+		m_techCost = 100;
+
+		//workers
 		m_numWorkers = 0;
 		m_resourcePoints = 1;
 		m_workersPerResourcePoint = 20;
-		m_techCost = 100;
-		m_startingWorkers = 5;
+		m_startingWorkers = 10;
 	}
 	
 	public void AddWaypoints()
@@ -135,11 +141,11 @@ public class PlayerScript : MonoBehaviour
 	{
 		if (m_numWorkers < m_resourcePoints * m_workersPerResourcePoint)
 		{
-			m_money += m_numWorkers * Time.deltaTime;
+			m_money += m_numWorkers * Time.deltaTime * 10;
 		}
 		else
 		{
-			m_money += m_resourcePoints * m_workersPerResourcePoint * Time.deltaTime;
+			m_money += m_resourcePoints * m_workersPerResourcePoint * Time.deltaTime * 10;
 		}
 	}
 
@@ -177,7 +183,7 @@ public class PlayerScript : MonoBehaviour
 			barracks.tag = tag;
 			barracks.GetComponent<BarracksScript>().m_unitSpawner = m_unitSpawnPoint;
 			barracks.GetComponent<BarracksScript>().m_initialTarget = m_initialWaypoint;
-			barracks.transform.position = new Vector3(0, 580, 0);
+			barracks.transform.position = m_hq.transform.position;
 			barracks.layer = gameObject.layer;
 			m_hasBarracks = true;
 			m_barracks.Add(barracks);
@@ -194,7 +200,7 @@ public class PlayerScript : MonoBehaviour
 			archeryRange.tag = tag;
 			archeryRange.GetComponent<ArcheryRangeScript>().m_unitSpawner = m_unitSpawnPoint;
 			archeryRange.GetComponent<ArcheryRangeScript>().m_initialTarget = m_initialWaypoint;
-			archeryRange.transform.position = new Vector3(0, 580, 0);
+			archeryRange.transform.position = m_hq.transform.position;
 			archeryRange.layer = gameObject.layer;
 			m_hasArcheryRange = true;
 			m_archeryRange.Add(archeryRange);
@@ -211,7 +217,7 @@ public class PlayerScript : MonoBehaviour
 			stables.tag = tag;
 			stables.GetComponent<StablesScript>().m_unitSpawner = m_unitSpawnPoint;
 			stables.GetComponent<StablesScript>().m_initialTarget = m_initialWaypoint;
-			stables.transform.position = new Vector3(0, 580, 0);
+			stables.transform.position = m_hq.transform.position;
 			stables.layer = gameObject.layer;
 			m_hasStables = true;
 			m_stables.Add(stables);
@@ -250,10 +256,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeBarracks)
         {
 			float cost = m_currentBarracks.GetComponent<BarracksScript>().BuildWarrior(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -263,10 +268,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeBarracks && m_swordTech)
 		{ 
 			float cost = m_currentBarracks.GetComponent<BarracksScript>().BuildSwordsman(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -276,10 +280,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeBarracks && m_spearTech)
 		{
 			float cost = m_currentBarracks.GetComponent<BarracksScript>().BuildSpearman(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -289,10 +292,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeArcheryRange)
 		{
 			float cost = m_currentArcheryRange.GetComponent<ArcheryRangeScript>().BuildArcher(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -302,10 +304,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeArcheryRange && m_crossbowTech)
 		{
 			float cost = m_currentArcheryRange.GetComponent<ArcheryRangeScript>().BuildCrossbowman(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -315,10 +316,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeArcheryRange && m_catapultTech)
 		{
 			float cost = m_currentArcheryRange.GetComponent<ArcheryRangeScript>().BuildCatapult(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -328,10 +328,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeStables && m_knightTech)
 		{
 			float cost = m_currentStables.GetComponent<StablesScript>().BuildKnight(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -341,10 +340,9 @@ public class PlayerScript : MonoBehaviour
 		if (m_freeStables)
 		{
 			float cost = m_currentStables.GetComponent<StablesScript>().BuildHorseman(m_money);
-			if (m_money > cost)
+			if (m_money > cost && cost != 0)
 			{
 				m_money -= cost;
-				SwapDirection();
 			}
 		}
 	}
@@ -356,7 +354,7 @@ public class PlayerScript : MonoBehaviour
 			m_money -= m_techCost;
 			return true;
 		}
-		return false;
+		return tech;
 	}
 
 	protected void BuildExpansion()
@@ -421,8 +419,25 @@ public class PlayerScript : MonoBehaviour
 		{
 			m_choice = Choice.worker;
 		}
+		else if (GetComponentInChildren<ExpansionPointScript>() != null && m_resourcePoints < 3 && m_numWorkers == m_resourcePoints * m_workersPerResourcePoint)
+		{
+			m_choice = Choice.expansion;
+		}
+		else if (!m_freeStables && m_tech && m_hasArcheryRange && !m_hasStables)
+		{
+			m_choice = Choice.stables;
+		}
+		else if (!m_freeArcheryRange && m_tech && m_hasBarracks && !m_hasArcheryRange)
+		{
+			m_choice = Choice.archeryRange;
+		}
+		//build archer if archery range isn't busy
+		else if (m_freeArcheryRange && m_money > m_currentArcheryRange.m_archerPrefab.GetComponent<ArcherScript>().m_cost)
+		{
+			m_choice = Choice.archer;
+		}
 		//build warrior if barracks isn't busy
-		else if (m_freeBarracks == true)
+		else if (m_freeBarracks && m_money > m_currentBarracks.m_warriorPrefab.GetComponent<WarriorScript>().m_cost)
 		{
 			m_choice = Choice.warrior;
 		}
@@ -431,19 +446,10 @@ public class PlayerScript : MonoBehaviour
 		{
 			m_choice = Choice.worker;
 		}
-		else if (GetComponentInChildren<ExpansionPointScript>() != null && m_resourcePoints < 3 && m_numWorkers == m_resourcePoints * m_workersPerResourcePoint)
-		{
-			m_choice = Choice.expansion;
-		}
 		//build knight if stables isn't busy
-		else if (m_freeStables == true && m_knightTech && m_money > m_currentStables.m_knightPrefab.GetComponent<KnightScript>().m_cost)
+		else if (m_freeStables && m_knightTech && m_money > m_currentStables.m_knightPrefab.GetComponent<KnightScript>().m_cost)
 		{
 			m_choice = Choice.knight;
-		}
-		//build archer if archery range isn't busy
-		else if (m_freeArcheryRange == true && m_money > m_currentArcheryRange.m_archerPrefab.GetComponent<ArcherScript>().m_cost)
-		{
-			m_choice = Choice.archer;
 		}
 		//build horseman if stables isn't busy
 		else if (m_freeStables == true && m_money > m_currentStables.m_horsemanPrefab.GetComponent<HorsemanScript>().m_cost)
@@ -451,22 +457,22 @@ public class PlayerScript : MonoBehaviour
 			m_choice = Choice.horseman;
 		}
 		//build crossbowman if archery range isn't busy
-		else if (m_freeArcheryRange == true && m_crossbowTech && m_money > m_currentArcheryRange.m_crossbowmanPrefab.GetComponent<CrossbowmanScript>().m_cost)
+		else if (m_freeArcheryRange && m_crossbowTech && m_money > m_currentArcheryRange.m_crossbowmanPrefab.GetComponent<CrossbowmanScript>().m_cost)
 		{
 			m_choice = Choice.crossbowman;
 		}
 		//build catapult if archery range isn't busy
-		else if (m_freeArcheryRange == true && m_catapultTech && m_money > m_currentArcheryRange.m_catapultPrefab.GetComponent<CatapultScript>().m_cost)
+		else if (m_freeArcheryRange && m_catapultTech && m_money > m_currentArcheryRange.m_catapultPrefab.GetComponent<CatapultScript>().m_cost)
 		{
 			m_choice = Choice.catapult;
 		}
 		//build spearman if barracks isn't busy
-		else if (m_freeBarracks == true && m_spearTech && m_money > m_currentBarracks.m_spearmanPrefab.GetComponent<SpearmanScript>().m_cost)
+		else if (m_freeBarracks && m_spearTech && m_money > m_currentBarracks.m_spearmanPrefab.GetComponent<SpearmanScript>().m_cost)
 		{
 			m_choice = Choice.spearman;
 		}
 		//build swordsman if barracks isn't busy
-		else if (m_freeBarracks == true && m_swordTech && m_money > m_currentBarracks.m_spearmanPrefab.GetComponent<SwordsmanScript>().m_cost)
+		else if (m_freeBarracks && m_swordTech && m_money > m_currentBarracks.m_swordsmanPrefab.GetComponent<SwordsmanScript>().m_cost)
 		{
 			m_choice = Choice.swordsman;
 		}
@@ -474,6 +480,21 @@ public class PlayerScript : MonoBehaviour
 		else if (!m_tech && m_money > m_techCost)
 		{
 			m_choice = Choice.tech;
+		}
+		//build stables if there are no free stables and an archery range has been built
+		else if (!m_freeStables && m_hasArcheryRange && m_money > m_stablesPrefab.GetComponent<StablesScript>().m_cost)
+		{
+			m_choice = Choice.stables;
+		}
+		//build archery range if there are no free archery ranges and a barracks has been built
+		else if (!m_freeArcheryRange && m_hasBarracks && m_money > m_archeryRangePrefab.GetComponent<ArcheryRangeScript>().m_cost && m_archeryRange.Count < 3)
+		{
+			m_choice = Choice.archeryRange;
+		}
+		//build barracks when it can be afforded and there are no free barracks
+		else if (!m_freeBarracks && m_money > m_barracksPrefab.GetComponent<BarracksScript>().m_cost && m_barracks.Count < 3)
+		{
+			m_choice = Choice.barracks;
 		}
 		else if (!m_swordTech && m_tech && m_money > m_techCost)
 		{
@@ -495,21 +516,6 @@ public class PlayerScript : MonoBehaviour
 		{
 			m_choice = Choice.knightTech;
 		}
-		//build stables if there are no free stables and an archery range has been built
-		else if (m_freeStables == false && m_hasArcheryRange == true && m_money > m_stablesPrefab.GetComponent<StablesScript>().m_cost)
-		{
-			m_choice = Choice.stables;
-		}
-		//build archery range if there are no free archery ranges and a barracks has been built
-		else if (m_freeArcheryRange == false && m_hasBarracks == true && m_money > m_archeryRangePrefab.GetComponent<ArcheryRangeScript>().m_cost)
-		{
-			m_choice = Choice.archeryRange;
-		}
-		//build barracks when it can be afforded and there are no free barracks
-		else if (m_freeBarracks == false && m_money > m_barracksPrefab.GetComponent<BarracksScript>().m_cost)
-		{
-			m_choice = Choice.barracks;
-		}
 		else if (GetComponentInChildren<TowerBaseScript>() != null)
 		{
 			m_choice = Choice.tower;
@@ -517,20 +523,6 @@ public class PlayerScript : MonoBehaviour
 		else if (GetComponentInChildren<TowerBaseScript>() != null)
 		{
 			m_choice = Choice.wall;
-		}
-	}
-
-	protected void SwapDirection()
-	{
-		if (m_initialWaypoint == m_leftWaypoint)
-		{
-			setDirection(m_rightWaypoint);
-			m_direction = Direction.right;
-		}
-		else if (m_initialWaypoint == m_rightWaypoint)
-		{
-			setDirection(m_leftWaypoint);
-			m_direction = Direction.left;
 		}
 	}
 
@@ -625,8 +617,33 @@ public class PlayerScript : MonoBehaviour
 	void setDirection(GameObject waypoint)
 	{
 		m_initialWaypoint = waypoint;
-		m_barracksPrefab.GetComponent<BarracksScript>().m_initialTarget = m_initialWaypoint;
-		m_archeryRangePrefab.GetComponent<ArcheryRangeScript>().m_initialTarget = m_initialWaypoint;
-		m_stablesPrefab.GetComponent<StablesScript>().m_initialTarget = m_initialWaypoint;
+		foreach (GameObject barracks in m_barracks)
+		{
+			barracks.GetComponent<BarracksScript>().m_initialTarget = m_initialWaypoint;
+		}
+
+		foreach (GameObject archeryRange in m_archeryRange)
+		{
+			archeryRange.GetComponent<ArcheryRangeScript>().m_initialTarget = m_initialWaypoint;
+		}
+
+		foreach (GameObject stables in m_stables)
+		{
+			stables.GetComponent<StablesScript>().m_initialTarget = m_initialWaypoint;
+		}
+	}
+
+	public void SwapDirection()
+	{
+		if (m_initialWaypoint == m_leftWaypoint)
+		{
+			setDirection(m_rightWaypoint);
+			m_direction = Direction.right;
+		}
+		else if (m_initialWaypoint == m_rightWaypoint)
+		{
+			setDirection(m_leftWaypoint);
+			m_direction = Direction.left;
+		}
 	}
 }

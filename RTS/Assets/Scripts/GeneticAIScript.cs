@@ -7,12 +7,18 @@ public class GeneticAIScript : PlayerScript
 	public bool m_won = false;
 	public float m_timeTaken = 0, m_opponentHealth = 0, m_damageDealt = 0, m_moneyFloated = 0;
 	public List<Choice> m_actionList = new List<Choice>();
-    int m_numActions = 5000;
-    int m_currentAction = 0;
-	
+	public bool m_firstTime = true;
+	int m_numActions;
+    int m_currentAction = 0;	
+
 	// Use this for initialization
 	void Start ()
 	{
+		if (m_firstTime)
+		{
+			Init();
+		}
+
 		InitialiseVariables();
 		for (int i = 0; i < m_startingWorkers; i++)
         {
@@ -25,7 +31,16 @@ public class GeneticAIScript : PlayerScript
 
 		m_currentAction = 0;
 
-		Populate();
+		if (m_firstTime)
+		{
+			Populate();
+		}
+	}
+
+	public void Init()
+	{
+		m_actionList = new List<Choice>();
+		m_numActions = 5000;
 	}
 
 	void Awake()
@@ -50,8 +65,8 @@ public class GeneticAIScript : PlayerScript
 			m_numActions++;
         }
 
-        //Select Action worker, Barracks or warrior        
-        m_choice = m_actionList[m_currentAction];
+		//Select Action worker, Barracks or warrior        
+		m_choice = m_actionList[m_currentAction];
         DoAction();
         m_currentAction++;
 

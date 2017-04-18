@@ -51,11 +51,6 @@ public class WallPointScript : MonoBehaviour
 			tag = "Genetic AI";
 			transform.parent = genetictransform;
 		}
-		else
-		{
-			tag = "Untagged";
-			transform.parent = GameObject.FindGameObjectWithTag("Map").transform;
-		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col)

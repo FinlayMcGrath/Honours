@@ -32,10 +32,12 @@ public class WaypointScript : MonoBehaviour
 				if (tag == "Rule AI" && col.tag == "Rule AI")
 				{
 					col.GetComponent<UnitScript>().m_targetPosition = m_nextRuleWaypoint.gameObject;
+					m_units.Add(col.GetComponent<UnitScript>());
 				}
 				else if (tag == "Genetic AI" && col.tag == "Genetic AI")
 				{
 					col.GetComponent<UnitScript>().m_targetPosition = m_nextGeneticWaypoint.gameObject;
+					m_units.Add(col.GetComponent<UnitScript>());
 				}
 			}
 			else if (m_useSecond && col.transform.parent.GetComponent<PlayerScript>().m_direction == PlayerScript.Direction.right)
@@ -43,6 +45,7 @@ public class WaypointScript : MonoBehaviour
 				if (col.transform.tag == tag)
 				{
 					col.GetComponent<UnitScript>().m_targetPosition = m_secondWaypoint.gameObject;
+					m_units.Add(col.GetComponent<UnitScript>());
 				}
 			}
 			if (!m_useSecond || col.transform.tag != tag)
@@ -50,14 +53,15 @@ public class WaypointScript : MonoBehaviour
 				if (col.transform.tag == "Rule AI")
 				{
 					col.GetComponent<UnitScript>().m_targetPosition = m_nextRuleWaypoint.gameObject;
+					m_units.Add(col.GetComponent<UnitScript>());
 				}
 				if (col.transform.tag == "Genetic AI")
 				{
 					col.GetComponent<UnitScript>().m_targetPosition = m_nextGeneticWaypoint.gameObject;
+					m_units.Add(col.GetComponent<UnitScript>());
 				}
 			}
 		}
-		m_units.Add(col.GetComponent<UnitScript>());
 	}
 
 	void OnTriggerExit2D(Collider2D col)

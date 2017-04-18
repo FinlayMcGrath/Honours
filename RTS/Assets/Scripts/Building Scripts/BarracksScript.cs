@@ -25,7 +25,6 @@ public class BarracksScript : BuildingScript
 			m_busy = true;
 			m_unitTraining = m_warriorPrefab;
 			m_unitScript = m_unitTraining.GetComponent<WarriorScript>();
-			m_unitScript.GetComponent<UnitScript>().m_targetPosition = m_initialTarget;
 			return m_unitScript.GetCost();
 		}
 		return 0;
@@ -40,7 +39,6 @@ public class BarracksScript : BuildingScript
 			m_busy = true;
 			m_unitTraining = m_swordsmanPrefab;
 			m_unitScript = m_unitTraining.GetComponent<SwordsmanScript>();
-			m_unitScript.GetComponent<UnitScript>().m_targetPosition = m_initialTarget;
 			return m_unitScript.GetCost();
 		}
 		return 0;
@@ -55,7 +53,6 @@ public class BarracksScript : BuildingScript
 			m_busy = true;
 			m_unitTraining = m_spearmanPrefab;
 			m_unitScript = m_unitTraining.GetComponent<SpearmanScript>();
-			m_unitScript.GetComponent<UnitScript>().m_targetPosition = m_initialTarget;
 			return m_unitScript.GetCost();
 		}
 		return 0;

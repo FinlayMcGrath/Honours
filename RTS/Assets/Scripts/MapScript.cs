@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MapScript : MonoBehaviour {
-
+public class MapScript : MonoBehaviour
+{
 
 	// Use this for initialization
 	void Start ()
@@ -11,7 +11,8 @@ public class MapScript : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	
 	}
 }

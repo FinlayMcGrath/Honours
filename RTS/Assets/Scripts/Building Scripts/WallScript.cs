@@ -5,12 +5,7 @@ using System.Collections.Generic;
 public class WallScript : BuildingScript
 {
 	public GameObject m_wallPointPrefab;
-
-	// Use this for initialization
-	void Start()
-	{
-		m_health = 1000;
-	}
+	
 
 	// Update is called once per frame
 	void Update()
