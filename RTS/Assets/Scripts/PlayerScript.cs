@@ -520,7 +520,7 @@ public class PlayerScript : MonoBehaviour
 		{
 			m_choice = Choice.tower;
 		}
-		else if (GetComponentInChildren<TowerBaseScript>() != null)
+		else if (GetComponentInChildren<WallPointScript>() != null)
 		{
 			m_choice = Choice.wall;
 		}
